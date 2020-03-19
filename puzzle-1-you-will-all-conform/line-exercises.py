@@ -4,10 +4,18 @@
 # Output is a set of commands (printed out) to get either all F's or all B's
 # Fewest commands are the goal
 
-caps = ['F', 'F', 'B', 'B', 'B', 'F', 'B', 'B', 'B', 'F', 'F', 'B', 'F']
+caps = ['F', 'F', 'B', 'B', 'B', 'F', 'B', 'F', 'B', 'B', 'F', 'F', 'B', 'F']
 cap2 = ['F', 'F', 'B', 'B', 'B', 'F', 'B', 'B', 'B', 'F', 'F', 'F', 'F']
 
 
+def print_func_name(f):
+    def inner(*args, **kwargs):
+        print(f.__name__)
+        return f(*args, **kwargs)
+    return inner
+
+
+@print_func_name
 def pleaseConformOpt(caps):
     # Initialization
     start = 0
@@ -43,15 +51,26 @@ def pleaseConformOpt(caps):
                       t[0], 'through', t[1], 'flip your caps!')
 
 
+@print_func_name
 def pleaseConformOnepass(caps):
-    caps = caps + [caps[0]]
-    for i in range(1, len(caps)):
-        if caps[i] != caps[i-1]:
-            if caps[i] != caps[0]:
-                print('People in positions', i, end='')
-            else:
-                print(' through', i-1, 'flip your caps!')
+    if len(caps) == 0:
+        print("Empty stadium!")
+    else:
+        start = 0
+        caps = caps + [caps[0]]
+
+        for i in range(1, len(caps)):
+            if caps[i] != caps[i-1]:
+                if caps[i] != caps[0]:
+                    start = i
+                else:
+                    if start == i-1:
+                        print('Person at position', start, 'flip your cap!')
+                    else:
+                        print('People in positions',
+                              start, 'through', i-1, 'flip your caps!')
 
 
 pleaseConformOpt(caps)
 pleaseConformOnepass(caps)
+pleaseConformOnepass([])
