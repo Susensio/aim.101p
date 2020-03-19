@@ -6,6 +6,7 @@
 
 caps = ['F', 'F', 'B', 'B', 'B', 'F', 'B', 'F', 'B', 'B', 'F', 'F', 'B', 'F']
 cap2 = ['F', 'F', 'B', 'B', 'B', 'F', 'B', 'B', 'B', 'F', 'F', 'F', 'F']
+cap3 = ['F', 'F', 'B', 'H', 'B', 'F', 'B', 'B', 'B', 'F', 'H', 'F', 'F']
 
 
 def print_func_name(f):
@@ -33,8 +34,10 @@ def pleaseConformOpt(caps):
 
             if caps[start] == 'F':
                 forward += 1
-            else:
+            elif caps[start] == 'B':
                 backward += 1
+            else:
+                pass
             start = i
 
     if forward < backward:
@@ -71,6 +74,7 @@ def pleaseConformOnepass(caps):
                               start, 'through', i-1, 'flip your caps!')
 
 
-pleaseConformOpt(caps)
-pleaseConformOnepass(caps)
-pleaseConformOnepass([])
+# pleaseConformOpt(caps)
+# pleaseConformOnepass(caps)
+# pleaseConformOnepass([])
+pleaseConformOpt(cap3)
