@@ -1,4 +1,4 @@
-# AIM.101P: Programming for the Puzzled
+# AIM.101P: Programming for the Puzzled (MIT 6.S095)
 
 Programming assignments for [MIT 6.S095 Course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-s095-programming-for-the-puzzled-january-iap-2018/index.htm) As Taught In January IAP 2018.
 
