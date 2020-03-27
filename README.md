@@ -8,7 +8,7 @@ Part of my self-made [Artificial Intelligence Master](github.com/Susensio/artifi
 ## Problem sets
 
 - [X] 1: You Will All Conform
-- [ ] 2: The Best Time To Party
+- [X] 2: The Best Time To Party
 - [ ] 3: You Can Read Minds
 - [ ] 4: Please Do Break The Crystal
 - [ ] 5: Keep Those Queens Apart
