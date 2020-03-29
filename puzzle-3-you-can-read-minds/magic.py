@@ -171,6 +171,8 @@ def ComputerAssistant():
     for i in range(5):
         number = number * (i + 1) // (i + 2)
         n = number % 52
+        while n in cind:
+            n += 1
         cards.append(deck[n])
         cind.append(n)
         cardsuits.append(n % 4)
@@ -196,10 +198,14 @@ def ComputerAssistant():
     sortList(remindices)
     outputNext3Cards(encode, remindices)
 
-    guess = input('What is the hidden card?')
+    guess = input('What is the hidden card? ')
     if guess == cards[hidden]:
         print('You are a Mind Reader Extraordinaire!')
     else:
         print('Sorry, not impressed!')
 
     return
+
+
+if __name__ == "__main__":
+    ComputerAssistant()
