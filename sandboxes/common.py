@@ -55,6 +55,20 @@ def indexes_if_sorted(elements: Iterable):
     return tuple(sorted(elements).index(el) for el in elements)
 
 
+def sort(elements: Iterable) -> Iterable:
+    """ Implements bubble sort algorithm with O(n²) complexity
+    >>> data = [3, 2, 5, 1, 4]
+    >>> sort(data)
+    [1, 2, 3, 4, 5]
+    """
+    result = list(elements)
+    for i in range(len(elements)):
+        for j in range(i+1, len(elements)):
+            if result[j] < result[i]:
+                result[i], result[j] = result[j], result[i]
+    return result
+
+
 def sort_by_index(elements: Iterable, indexes: Iterable):
     """Rearrange elements by indexes
 
@@ -66,7 +80,7 @@ def sort_by_index(elements: Iterable, indexes: Iterable):
     ('b', 'a', 'c')
     """
 
-    return tuple(sorted(elements)[index] for index in indexes)
+    return tuple(sort(elements)[index] for index in indexes)
 
 
 def test_sorting_indexes():
