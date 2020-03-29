@@ -1,5 +1,5 @@
 # Just playing around while watching the lecture, before seeing the code
-
+from common import most_frequent
 data = [
     ('Beyoncé', 6, 7),
     ('Taylor', 7, 9),
@@ -16,18 +16,7 @@ def best_hour(schedule):
     for person, comes, goes in schedule:
         for h in range(comes, goes):
             hours.append(h)
-    return more_frequent(hours)
-
-
-def more_frequent(array):
-    # Initialize counter
-    counter = {el: 0 for el in set(array)}
-    # Do the counting
-    for el in array:
-        counter[el] += 1
-
-    # Get key with largest value
-    return max(counter, key=counter.get)
+    return most_frequent(hours)
 
 
 result = best_hour(data)
