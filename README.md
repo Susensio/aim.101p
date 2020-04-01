@@ -18,3 +18,8 @@ Part of my self-made [Artificial Intelligence Master](github.com/Susensio/artifi
 - [ ] 9: The Disorganized Handyman
 - [ ] 10: A Weekend To Remember
 - [ ] 11: Memory Serves You Well
+
+
+## Comments
+
+I'm symlinking common.py all over the place because python relative imports are a pain in the ass

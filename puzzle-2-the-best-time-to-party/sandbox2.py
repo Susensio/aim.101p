@@ -1,5 +1,6 @@
 # Just playing around while watching the lecture, before seeing the code
 from common import most_frequent
+
 data = [
     ('Beyoncé', 6, 7),
     ('Taylor', 7, 9),
