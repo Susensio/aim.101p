@@ -88,3 +88,49 @@ def test_sorting_indexes():
     data = ['a', 'b', 'c', 'd']
     indexes = (3, 1, 0, 2)
     assert indexes_if_sorted(sort_by_index(data, indexes)) == indexes
+
+
+def bin_to_int(binary: str) -> int:
+    """
+    >>> bin_to_int('0')
+    0
+    >>> bin_to_int('1')
+    1
+    >>> bin_to_int('10')
+    2
+    >>> bin_to_int('1010')
+    10
+    """
+    result = 0
+    for i, bit in enumerate(reversed(binary)):
+        if bit == '1':
+            result += (2**i)
+    # return sum((2**i)*int(bit) for i, bit in enumerate(reversed(binary)))
+    return result
+
+
+def int_to_bin(number: int, bits) -> str:
+    """
+    >>> int_to_bin(0, 1)
+    '0'
+    >>> int_to_bin(2, 4)
+    '0010'
+    >>> int_to_bin(5, 4)
+    '0101'
+    >>> int_to_bin(13, 4)
+    '1101'
+    >>> int_to_bin(255, 8)
+    '11111111'
+    >>> int_to_bin(256, 8)
+    Traceback (most recent call last):
+    ...
+    ValueError: Overflow
+    """
+    if number > 2**bits - 1:
+        raise ValueError('Overflow')
+    result = ['0'] * bits
+    for i in range(bits):
+        if number % 2:
+            result[i] = '1'
+        number = number // 2
+    return ''.join(reversed(result))
