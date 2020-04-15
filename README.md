@@ -2,7 +2,7 @@
 
 Programming assignments and related code for [MIT 6.S095 Course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-s095-programming-for-the-puzzled-january-iap-2018/index.htm) as taught in January IAP 2018.
 
-Part of my self-made [Artificial Intelligence Master](github.com/Susensio/artificial-intelligence-master/).
+Part of my self-made [Artificial Intelligence Master](https://github.com/Susensio/artificial-intelligence-master).
 
 
 ## Problem sets
