@@ -2,7 +2,9 @@ from functools import total_ordering
 import random
 import pytest
 
-from common import most_frequent, indexes_if_sorted, sort_by_index, int_to_bin, bin_to_int
+from aim.collections import most_frequent
+
+from helpers import indexes_if_sorted, sort_by_index, int_to_bin, bin_to_int
 
 
 @total_ordering

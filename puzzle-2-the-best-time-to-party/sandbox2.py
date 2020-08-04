@@ -1,5 +1,5 @@
 # Just playing around while watching the lecture, before seeing the code
-from common import most_frequent
+from aim.collections import most_frequent
 
 data = [
     ('Beyoncé', 6, 7),
