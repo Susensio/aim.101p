@@ -1,0 +1,1 @@
+-e git://github.com/Susensio/aim.common#egg=aim-common

@@ -18,3 +18,12 @@ Part of my self-made [Artificial Intelligence Master](https://github.com/Susensi
 - [ ] 9: The Disorganized Handyman
 - [ ] 10: A Weekend To Remember
 - [ ] 11: Memory Serves You Well
+
+
+## Requirements
+
+[AIM Common](github.com/Susensio/aim.common) library is required
+    
+    pip install -e git://github.com/Susensio/aim.common#egg=aim-common
+
+
