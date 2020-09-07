@@ -55,7 +55,7 @@ def encode(base, number):
 
 def decode(base, digits):
     """Least significant digit first
-    >>> decode(3, (1, 1, 0))
+    >>> decode(3, (0, 1, 1))
     12
     """
     result = 0
