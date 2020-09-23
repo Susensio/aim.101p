@@ -19,7 +19,7 @@ def noConflicts(board, current):
 
 # This procedure places 8 Queens on a board so they don't conflict.
 # It assumes n = 8 and won't work with other n!
-def EightQueens(solutions, n=8):
+def EightQueens(solutions=-1, location=None, n=8):
 
     board = [-1] * n
     for i in range(n):
@@ -58,4 +58,21 @@ def EightQueens(solutions, n=8):
     return
 
 
-EightQueens(1)
+def eight_queens_constrained(location, n=8):
+
+    if location is None:
+        location = [-1] * n
+
+    for column in range(n):
+        if location[column] == -1:
+            for row in range(n):
+                location[column] = row
+                # if (column == n-1) and noConflicts(location, column):
+                #     print(location)
+
+
+if __name__ == "__main__":
+
+    # EightQueens()
+
+    eight_queens_constrained([-1, 4, -1, -1, -1, -1, -1, 0])
