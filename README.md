@@ -11,7 +11,7 @@ Part of my self-made [Artificial Intelligence Master](https://github.com/Susensi
 - [X] 2: The Best Time To Party
 - [X] 3: You Can Read Minds
 - [X] 4: Please Do Break The Crystal
-- [ ] 5: Keep Those Queens Apart
+- [X] 5: Keep Those Queens Apart
 - [ ] 6: A Profusion Of Queens
 - [ ] 7: Tile That Courtyard Please
 - [ ] 8: You Wont Want To Play Sudoku Again
