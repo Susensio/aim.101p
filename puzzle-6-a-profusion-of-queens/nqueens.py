@@ -9,6 +9,7 @@ def nQueens(size):
     board = [-1] * size
     rQueens(board, 0, size)
     print(board)
+    print_queens(board)
 
 # This procedure checks that the most recently placed queen on column current
 # does not conflict with queens in columns to the left.
@@ -23,9 +24,22 @@ def noConflicts(board, current):
     return True
 
 
+def print_queens(board):
+    side = len(board)
+    for row_num in range(side):
+        row = []
+        for column in range(side):
+            if board[column] == row_num:
+                row.append("Q ")
+            else:
+                row.append(". ")
+        print("".join(row))
+
 # This procedure places a queens on the board on a given column so it does
 # not conflict with the existing queens, and then calls itself recursively
 # to place subsequent queens till the requisite number of queens are placed
+
+
 def rQueens(board, current, size):
     if (current == size):
         return True
