@@ -5,9 +5,13 @@
 
 # This procedure initializes the board to be empty, calls the recursive N-queens
 # procedure and prints the returned solution
-def nQueens(size):
+def nQueens(size, location=None):
+    if location is None:
+        location = [-1]*size
+
     board = [-1] * size
-    rQueens(board, 0, size)
+    rQueens(board, 0, size, location)
+
     print(board)
     print_queens(board)
 
@@ -40,17 +44,29 @@ def print_queens(board):
 # to place subsequent queens till the requisite number of queens are placed
 
 
-def rQueens(board, current, size):
+def rQueens(board, current, size, location):
     if (current == size):
         return True
+
+    elif (location[current] != -1):
+        board[current] = location[current]
+        if (noConflicts(board, current)):
+            done = rQueens(board, current + 1, size, location)
+            if (done):
+                return True
+        return False
+
     else:
         for i in range(size):
             board[current] = i
             if (noConflicts(board, current)):
-                done = rQueens(board, current + 1, size)
+                done = rQueens(board, current + 1, size, location)
                 if (done):
                     return True
         return False
 
 
-nQueens(20)
+if __name__ == "__main__":
+    nQueens(20)
+
+    nQueens(10, [-1, -1, 4, -1, -1, -1, -1, 0, -1, 5])
