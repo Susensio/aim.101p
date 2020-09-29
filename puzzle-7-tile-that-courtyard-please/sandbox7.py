@@ -140,12 +140,27 @@ def split_into_quadrants(board):
     >>> split_into_quadrants(board)
     [[[2]], [[1]], [[3]], [[4]]]
     """
-    middle = len(board)//2
-    q1 = [row[middle:] for row in board[:middle]]
-    q2 = [row[:middle] for row in board[:middle]]
-    q3 = [row[:middle] for row in board[middle:]]
-    q4 = [row[middle:] for row in board[middle:]]
+    middle_row = len(board) // 2
+    middle_col = len(board[0]) // 2
+    board = SlizableMatrix(board)
+
+    q1 = board[:middle_row, middle_col:]
+    q2 = board[:middle_row, :middle_col]
+    q3 = board[middle_row:, :middle_col]
+    q4 = board[middle_row:, middle_col:]
     return [q1, q2, q3, q4]
+
+
+class SlizableMatrix:
+    def __init__(self, matrix):
+        self.matrix = matrix
+
+    def __getitem__(self, arg):
+        rows, cols = arg
+        try:
+            return [row[cols] for row in self.matrix[rows]]
+        except TypeError:
+            return self.matrix[rows][cols]
 
 
 def merge_from_quadrants(boards):
