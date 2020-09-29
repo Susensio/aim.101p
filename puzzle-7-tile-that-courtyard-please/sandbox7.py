@@ -82,7 +82,7 @@ def place_center_tile(board, skip_quadrant):
     ·⎼⎼⎼·⎼⎼⎼·
     |       |
     ·⎼⎼⎼·   ·
-    |   |   |
+    | N |   |
     ·⎼⎼⎼·⎼⎼⎼·
     """
     quadrants = [1, 2, 3, 4]
@@ -184,6 +184,7 @@ def pretty_print(board):
     >>> place_tile(board, ((0,2), (0,3), (1,3)))
     >>> place_tile(board, ((2,0), (3,0), (3,1)))
     >>> place_tile(board, ((2,3), (3,3), (3,2)))
+    >>> place_tile(board, ((1,1), (1,2), (2,1)))
     >>> place_statue(board, (2,2))
     >>> pretty_print(board)
     ·⎼⎼⎼·⎼⎼⎼·⎼⎼⎼·⎼⎼⎼·
