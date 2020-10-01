@@ -43,8 +43,8 @@ def place_all_tiles(board, missing):
         missing_quadrant = find_quadrant(board, missing)
 
         sub_boards = split_into_quadrants(board)
-        for i, sub_board in enumerate(sub_boards):
-            q = i+1
+        for q, sub_board in sub_boards.items():
+
             if q == missing_quadrant:
                 row_missing, col_missing = missing
                 if q == 1:
@@ -65,7 +65,7 @@ def place_all_tiles(board, missing):
                 else:  # q == 4
                     relative_missing = (0, 0)
 
-            sub_boards[i] = place_all_tiles(sub_board, relative_missing)
+            sub_boards[q] = place_all_tiles(sub_board, relative_missing)
 
         board = merge_from_quadrants(sub_boards)
 
@@ -135,10 +135,10 @@ def split_into_quadrants(board):
     | 3 | 4 |
     ·⎼⎼⎼·⎼⎼⎼·
 
-    >>> board = [[1, 2],
-    ...          [3, 4]]
+    >>> board = [[5, 6],
+    ...          [7, 8]]
     >>> split_into_quadrants(board)
-    [[[2]], [[1]], [[3]], [[4]]]
+    {1: [[6]], 2: [[5]], 3: [[7]], 4: [[8]]}
     """
     if len(board) == 0 or len(board[0]) == 0:
         return [[]]
@@ -152,7 +152,7 @@ def split_into_quadrants(board):
     q2 = board[:middle_row, :middle_col]
     q3 = board[middle_row:, :middle_col]
     q4 = board[middle_row:, middle_col:]
-    return [q1, q2, q3, q4]
+    return {1: q1, 2: q2, 3: q3, 4: q4}
 
 
 class SlizableMatrix:
@@ -178,12 +178,11 @@ def merge_from_quadrants(boards):
     | 3 | 4 |
     ·⎼⎼⎼·⎼⎼⎼·
 
-    >>> merge_from_quadrants([[[1]], [[2]], [[3]], [[4]]])
+    >>> merge_from_quadrants({1: [[1]], 2: [[2]], 3: [[3]], 4: [[4]]})
     [[2, 1], [3, 4]]
     """
-    q1, q2, q3, q4 = boards
-    return ([row2+row1 for row1, row2 in zip(q1, q2)] +
-            [row3+row4 for row3, row4 in zip(q3, q4)])
+    return ([row2+row1 for row1, row2 in zip(boards[1], boards[2])] +
+            [row3+row4 for row3, row4 in zip(boards[3], boards[4])])
 
 
 def place_tile(board, points):
