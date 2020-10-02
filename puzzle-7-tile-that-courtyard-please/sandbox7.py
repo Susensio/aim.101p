@@ -127,7 +127,7 @@ def find_quadrant(board, point):
             return 4
 
 
-def split_into_quadrants(board):
+def split_into_quadrants(board, quadrant_preference=4):
     """Divide into 4 boards middle side in quadrant order.
     ·⎼⎼⎼·⎼⎼⎼·
     | 2 | 1 |
@@ -144,8 +144,12 @@ def split_into_quadrants(board):
         return [[]]
         raise ValueError("Empty array cannot be splited")
 
-    middle_row = int(len(board) / 2 + 0.5)
-    middle_col = int(len(board[0]) / 2 + 0.5)
+    middle_row = int(len(board) / 2 +
+                     (0.5 if quadrant_preference in (1, 2) else 0)
+                     )
+    middle_col = int(len(board[0]) / 2 +
+                     (0.5 if quadrant_preference in (2, 3) else 0)
+                     )
     board = SlizableMatrix(board)
 
     q1 = board[:middle_row, middle_col:]
@@ -263,6 +267,43 @@ def pretty_print(board):
         print("".join(line))
 
     print((POINT+HORIZONTAL_SEPARATOR)*side + POINT)
+
+
+TEST_MATRIX = [[1, 2, 3],
+               [4, 5, 6],
+               [7, 8, 9]]
+
+
+def test_split_into_quadrants_first():
+    quadrants = split_into_quadrants(TEST_MATRIX, 1)
+    assert quadrants[1] == [[2, 3], [5, 6]]
+    assert quadrants[2] == [[1], [4]]
+    assert quadrants[3] == [[7]]
+    assert quadrants[4] == [[8, 9]]
+
+
+def test_split_into_quadrants_second():
+    quadrants = split_into_quadrants(TEST_MATRIX, 2)
+    assert quadrants[1] == [[3], [6]]
+    assert quadrants[2] == [[1, 2], [4, 5]]
+    assert quadrants[3] == [[7, 8]]
+    assert quadrants[4] == [[9]]
+
+
+def test_split_into_quadrants_third():
+    quadrants = split_into_quadrants(TEST_MATRIX, 3)
+    assert quadrants[1] == [[3]]
+    assert quadrants[2] == [[1, 2]]
+    assert quadrants[3] == [[4, 5], [7, 8]]
+    assert quadrants[4] == [[6], [9]]
+
+
+def test_split_into_quadrants_fourth():
+    quadrants = split_into_quadrants(TEST_MATRIX, 4)
+    assert quadrants[1] == [[2, 3]]
+    assert quadrants[2] == [[1]]
+    assert quadrants[3] == [[4], [7]]
+    assert quadrants[4] == [[5, 6], [8, 9]]
 
 
 if __name__ == "__main__":

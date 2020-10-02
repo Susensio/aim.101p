@@ -16,18 +16,21 @@ T_sq = [[1, 4, 7, 11, 15, 18],
 
 
 def binary_search_2d(matrix, value):
+    QUADRANT_PREFERENCE = 2
+    center_value = center(matrix, QUADRANT_PREFERENCE)
+
     if len(matrix) == 0 or len(matrix[0]) == 0:
         return None
     elif len(matrix) == 1 and len(matrix[0]) == 1:
-        if center(matrix) == value:
+        if center_value == value:
             # Value found!
             return (0, 0)
     else:
-        quadrants = split_into_quadrants(matrix)
+        quadrants = split_into_quadrants(matrix, QUADRANT_PREFERENCE)
 
-        if center(matrix) == value:
-            return middle(matrix)
-        elif center(matrix) < value:
+        if center_value == value:
+            return middle(matrix, QUADRANT_PREFERENCE)
+        elif center_value < value:
             # Remove 2nd quadrant (index 1)
             quadrants.pop(2)
         else:
@@ -38,7 +41,7 @@ def binary_search_2d(matrix, value):
             found = binary_search_2d(quad, value)
             if found:
                 row, col = found
-                mid_row, mid_col = middle(matrix)
+                mid_row, mid_col = middle(matrix, QUADRANT_PREFERENCE)
                 if i in (1, 4):
                     col = col + mid_col + 1
                 if i in (3, 4):
@@ -47,17 +50,21 @@ def binary_search_2d(matrix, value):
                 return row, col
 
 
-def center(matrix):
-    middle_row, middle_col = middle(matrix)
+def center(matrix, *args, **kwargs):
+    middle_row, middle_col = middle(matrix, *args, **kwargs)
     return matrix[middle_row][middle_col]
 
 
-def middle(matrix):
+def middle(matrix, quadrant_preference=4):
     # BUG
     # Aqui el problema es que no soy consitente en la elección del centro
     # Si quiero que el centro sea parte del segundo cuadrante de split_into_quadrants, tengo que darle una vuelta
-    middle_row = len(matrix) // 2
-    middle_col = len(matrix[0]) // 2
+    middle_row = int(len(matrix) / 2 -
+                     (0.5 if quadrant_preference in (1, 2) else 0)
+                     )
+    middle_col = int(len(matrix[0]) / 2 -
+                     (0.5 if quadrant_preference in (2, 3) else 0)
+                     )
     return middle_row, middle_col
 
 
@@ -103,6 +110,26 @@ def test_binary_search_2d_square_fourth_quad():
 
 def test_binary_search_2d_square_not_found():
     assert binary_search_2d(T_sq, 1000) is None
+
+
+def test_center_first_quad():
+    m = [[2, 1], [3, 4]]
+    assert center(m, 1) == 1
+
+
+def test_center_second_quad():
+    m = [[2, 1], [3, 4]]
+    assert center(m, 2) == 2
+
+
+def test_center_third_quad():
+    m = [[2, 1], [3, 4]]
+    assert center(m, 3) == 3
+
+
+def test_center_fourth_quad():
+    m = [[2, 1], [3, 4]]
+    assert center(m, 4) == 4
 
 
 if __name__ == "__main__":
