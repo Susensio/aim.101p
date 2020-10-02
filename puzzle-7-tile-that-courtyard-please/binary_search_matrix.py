@@ -1,5 +1,4 @@
 from sandbox7 import split_into_quadrants
-from pprint import pprint
 
 T = [[1, 4, 7, 11, 15],
      [2, 5, 8, 12, 19],
@@ -7,30 +6,29 @@ T = [[1, 4, 7, 11, 15],
      [10, 13, 14, 17, 24],
      [18, 21, 23, 26, 30]]
 
-T_sq = [[1, 4, 7, 11, 15, 18],
-        [2, 5, 8, 12, 19, 21],
-        [3, 6, 9, 16, 22, 23],
-        [10, 13, 14, 17, 24, 26],
-        [18, 21, 23, 26, 30, 35],
+T_sq = [[1, 4, 7, 11, 15, 35],
+        [2, 5, 8, 12, 19, 38],
+        [3, 6, 9, 16, 22, 42],
+        [10, 13, 14, 17, 24, 55],
+        [18, 21, 23, 26, 30, 60],
         [50, 60, 70, 80, 90, 100]]
 
 
 def binary_search_2d(matrix, value):
     QUADRANT_PREFERENCE = 2
-    center_value = center(matrix, QUADRANT_PREFERENCE)
 
     if len(matrix) == 0 or len(matrix[0]) == 0:
         return None
     elif len(matrix) == 1 and len(matrix[0]) == 1:
-        if center_value == value:
+        if center(matrix, QUADRANT_PREFERENCE) == value:
             # Value found!
             return (0, 0)
     else:
         quadrants = split_into_quadrants(matrix, QUADRANT_PREFERENCE)
 
-        if center_value == value:
+        if center(matrix, QUADRANT_PREFERENCE) == value:
             return middle(matrix, QUADRANT_PREFERENCE)
-        elif center_value < value:
+        elif center(matrix, QUADRANT_PREFERENCE) < value:
             # Remove 2nd quadrant (index 1)
             quadrants.pop(2)
         else:
@@ -56,9 +54,6 @@ def center(matrix, *args, **kwargs):
 
 
 def middle(matrix, quadrant_preference=4):
-    # BUG
-    # Aqui el problema es que no soy consitente en la elección del centro
-    # Si quiero que el centro sea parte del segundo cuadrante de split_into_quadrants, tengo que darle una vuelta
     middle_row = int(len(matrix) / 2 -
                      (0.5 if quadrant_preference in (1, 2) else 0)
                      )
