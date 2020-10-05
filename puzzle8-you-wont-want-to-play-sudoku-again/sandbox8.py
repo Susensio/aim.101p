@@ -1,36 +1,37 @@
 class SudokuBoard(list):
     def __str__(self):
+        HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
+        HEAVY_MIDDLE = "┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫"
+        LIGHT_MIDDLE = "┠───┼───┼───╂───┼───┼───╂───┼───┼───┨"
+        HEAVY_BOTTOM = "┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛"
+        HEAVY_VERTICAL = "┃"
+        LIGHT_VERTICAL = "│"
         SIDE = 9
-        HORIZONTAL_LINE = "━━━"
-        HORIZONTAL = "───"
-        VERTICAL_LINE = "┃"
-        VERTICAL = "|"
-        POINT = "·"
-        MISSING = "   "
 
+        string = []
+
+        string.append(HEAVY_UPPER)
         for row in range(SIDE):
-            if (row % 3) == 0:
-                print((POINT+HORIZONTAL_LINE)*SIDE + POINT)
-            else:
-                print((POINT+HORIZONTAL)*SIDE + POINT)
+            if row in (3, 6):
+                string.append(HEAVY_MIDDLE)
+            elif row in (1, 2, 4, 5, 7, 8):
+                string.append(LIGHT_MIDDLE)
 
-            line = []
-            for col in range(SIDE):
-                if (col % 3) == 0:
-                    line.append(VERTICAL_LINE)
-                else:
-                    line.append(VERTICAL)
+            substring = []
 
-                value = self[row][col]
-                if value == -1:
-                    line.append(MISSING)
-                else:
-                    line.append(f" {value} ")
+            substring.append(HEAVY_VERTICAL)
+            for col, value in enumerate(self[row]):
+                if col in (3, 6):
+                    substring.append(HEAVY_VERTICAL)
+                elif col in (1, 2, 4, 5, 7, 8):
+                    substring.append(LIGHT_VERTICAL)
+                substring.append(f" {value if value != -1 else ' '} ")
+            substring.append(HEAVY_VERTICAL)
+            string.append("".join(substring))
 
-            line.append(VERTICAL_LINE)
-            print("".join(line))
+        string.append(HEAVY_BOTTOM)
 
-        print((POINT+HORIZONTAL_LINE)*SIDE + POINT)
+        return "\n".join(string)
 
 
 if __name__ == "__main__":
