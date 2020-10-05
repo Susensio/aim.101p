@@ -1,5 +1,4 @@
 from pytest import fixture
-from sandbox8 import SudokuBoard
 
 
 @fixture
@@ -15,4 +14,4 @@ def sudoku_classroom():
         [-1, -1, 9, -1, -1, -1, 6, -1, -1],
         [-1, -1, -1, 8, -1, 5, -1, -1, -1]
     ]
-    return SudokuBoard(board)
+    return board
