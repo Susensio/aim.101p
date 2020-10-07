@@ -2,6 +2,12 @@ from aim.time import timeit
 
 
 def solve_sudoku(board):
+    # Start counting backtracks when first entering function
+    try:
+        board.__getattribute__('backtracks')
+    except AttributeError:
+        board.backtracks = 0
+
     # Find an empty cell
     for row in range(9):
         for col in range(9):
@@ -18,10 +24,11 @@ def solve_sudoku(board):
                         else:
                             # Revert change and continue with next number
                             board[row][col] = -1
+                            board.backtracks += 1
                 # When no number is valid, prune tree and backtrack
                 return
 
-    # All cells are filled
+    # All cells are traversed
     return board
 
 
@@ -101,3 +108,4 @@ if __name__ == "__main__":
 
     solved = timeit(solve_sudoku)(board)
     pretty_print_sudoku(solved)
+    print(solved.backtracks)
