@@ -6,14 +6,16 @@ def solve_sudoku(board):
             if board[row][col] == -1:
                 # Try to place a number
                 for number in range(1, 10):
-                    new_board, allowed = place_sudoku_cell(
-                        board, row, col, number)
+                    allowed = is_allowed_sudoku_cell(board, row, col, number)
                     if allowed:
-                        # Branch down
-                        attemp = solve_sudoku(new_board)
+                        # Continue exploring this branch, i.e. move down the tree
+                        board[row][col] = number
+                        attemp = solve_sudoku(board)
                         if attemp:
                             return attemp
-
+                        else:
+                            # Revert change and continue with next number
+                            board[row][col] = -1
                 # When no number is valid, prune tree and backtrack
                 return
 
@@ -21,10 +23,7 @@ def solve_sudoku(board):
     return board
 
 
-def place_sudoku_cell(board, row, col, number):
-    new_board = [row.copy() for row in board]
-    new_board[row][col] = number
-
+def is_allowed_sudoku_cell(board, row, col, number):
     horizontal_unique = not (number in board[row])
     vertical_unique = not (number in [row[col] for row in board])
 
@@ -41,7 +40,7 @@ def place_sudoku_cell(board, row, col, number):
 
     allowed = horizontal_unique and vertical_unique and box_unique
 
-    return new_board, allowed
+    return allowed
 
 
 def pretty_print_sudoku(board):
