@@ -1,3 +1,5 @@
+from aim.time import timeit
+
 
 def solve_sudoku(board):
     # Find an empty cell
@@ -25,7 +27,12 @@ def solve_sudoku(board):
 
 def is_allowed_sudoku_cell(board, row, col, number):
     horizontal_unique = not (number in board[row])
+    if not horizontal_unique:
+        return False
+
     vertical_unique = not (number in [row[col] for row in board])
+    if not vertical_unique:
+        return False
 
     box_row = row//3
     box_row_start = box_row*3
@@ -37,10 +44,10 @@ def is_allowed_sudoku_cell(board, row, col, number):
            for row in board[box_row_start:box_row_end]
            for cell in row[box_col_start:box_col_end]]
     box_unique = not (number in box)
+    if not box_unique:
+        return False
 
-    allowed = horizontal_unique and vertical_unique and box_unique
-
-    return allowed
+    return True
 
 
 def pretty_print_sudoku(board):
@@ -75,7 +82,7 @@ def pretty_print_sudoku(board):
 
     string.append(HEAVY_BOTTOM)
 
-    return "\n".join(string)
+    print("\n".join(string))
 
 
 if __name__ == "__main__":
@@ -90,5 +97,7 @@ if __name__ == "__main__":
         [-1, -1, 9, -1, -1, -1, 6, -1, -1],
         [-1, -1, -1, 8, -1, 5, -1, -1, -1]
     ]
-    print(pretty_print_sudoku(board))
-    print(pretty_print_sudoku(solve_sudoku(board)))
+    pretty_print_sudoku(board)
+
+    solved = timeit(solve_sudoku)(board)
+    pretty_print_sudoku(solved)
