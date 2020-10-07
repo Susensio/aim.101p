@@ -68,5 +68,4 @@ def rQueens(board, current, size, location):
 
 if __name__ == "__main__":
     nQueens(20)
-
     nQueens(10, [-1, -1, 4, -1, -1, -1, -1, 0, -1, 5])

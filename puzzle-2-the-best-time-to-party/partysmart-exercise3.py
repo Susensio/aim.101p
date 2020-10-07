@@ -34,5 +34,6 @@ def bestTimeToPartyWeighted(schedule):
     return time
 
 
-assert bestTimeToPartyWeighted(sched) == 10
-assert bestTimeToPartyWeighted(sched3) == 11.0
+if __name__ == "__main__":
+    assert bestTimeToPartyWeighted(sched) == 10
+    assert bestTimeToPartyWeighted(sched3) == 11.0

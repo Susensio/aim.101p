@@ -71,6 +71,7 @@ def chooseTime(times):
     return maxcount, time
 
 
-# bestTimeToPartySmart(sched)
-bestTimeToPartySmart(sched2)
-bestTimeToPartySmart(sched3)
+if __name__ == "__main__":
+    # bestTimeToPartySmart(sched)
+    bestTimeToPartySmart(sched2)
+    bestTimeToPartySmart(sched3)

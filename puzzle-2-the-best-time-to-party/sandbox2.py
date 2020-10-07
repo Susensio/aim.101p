@@ -38,4 +38,5 @@ def best_hour_inc(schedule):
     return max(density, key=density.get)
 
 
-print(best_hour_inc(data))
+if __name__ == "__main__":
+    print(best_hour_inc(data))

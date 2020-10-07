@@ -52,4 +52,5 @@ def celebrityDensity(sched, start, end):
     return count
 
 
-bestTimeToParty(sched)
+if __name__ == "__main__":
+    bestTimeToParty(sched)

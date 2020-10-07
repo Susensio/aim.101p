@@ -48,5 +48,6 @@ def pleaseConform(caps):
                   'through', t[1], 'flip your caps!')
 
 
-pleaseConform(caps)
-# pleaseConform(cap2)
+if __name__ == "__main__":
+    pleaseConform(caps)
+    # pleaseConform(cap2)
