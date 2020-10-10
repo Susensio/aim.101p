@@ -2,12 +2,6 @@ from aim.time import timeit
 
 
 def solve_sudoku(board):
-    # Start counting backtracks when first entering function
-    try:
-        board.__getattribute__('backtracks')
-    except AttributeError:
-        board.backtracks = 0
-
     # Find an empty cell
     for row in range(9):
         for col in range(9):
@@ -57,43 +51,50 @@ def is_allowed_sudoku_cell(board, row, col, number):
     return True
 
 
-def pretty_print_sudoku(board):
-    HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
-    HEAVY_MIDDLE = "┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫"
-    LIGHT_MIDDLE = "┠───┼───┼───╂───┼───┼───╂───┼───┼───┨"
-    HEAVY_BOTTOM = "┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛"
-    HEAVY_VERTICAL = "┃"
-    LIGHT_VERTICAL = "│"
-    SIDE = 9
+class SudokuBoard(list):
+    __slots__ = ['backtracks']
 
-    string = []
+    def __init__(self, *args, **kwargs):
+        self.backtracks = 0
+        return super().__init__(*args, **kwargs)
 
-    string.append(HEAVY_UPPER)
-    for row in range(SIDE):
-        if row in (3, 6):
-            string.append(HEAVY_MIDDLE)
-        elif row in (1, 2, 4, 5, 7, 8):
-            string.append(LIGHT_MIDDLE)
+    def __str__(self):
+        HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
+        HEAVY_MIDDLE = "┣━━━┿━━━┿━━━╋━━━┿━━━┿━━━╋━━━┿━━━┿━━━┫"
+        LIGHT_MIDDLE = "┠───┼───┼───╂───┼───┼───╂───┼───┼───┨"
+        HEAVY_BOTTOM = "┗━━━┷━━━┷━━━┻━━━┷━━━┷━━━┻━━━┷━━━┷━━━┛"
+        HEAVY_VERTICAL = "┃"
+        LIGHT_VERTICAL = "│"
+        SIDE = 9
 
-        substring = []
+        string = []
 
-        substring.append(HEAVY_VERTICAL)
-        for col, value in enumerate(board[row]):
-            if col in (3, 6):
-                substring.append(HEAVY_VERTICAL)
-            elif col in (1, 2, 4, 5, 7, 8):
-                substring.append(LIGHT_VERTICAL)
-            substring.append(f" {value if value != -1 else ' '} ")
-        substring.append(HEAVY_VERTICAL)
-        string.append("".join(substring))
+        string.append(HEAVY_UPPER)
+        for row in range(SIDE):
+            if row in (3, 6):
+                string.append(HEAVY_MIDDLE)
+            elif row in (1, 2, 4, 5, 7, 8):
+                string.append(LIGHT_MIDDLE)
 
-    string.append(HEAVY_BOTTOM)
+            substring = []
 
-    print("\n".join(string))
+            substring.append(HEAVY_VERTICAL)
+            for col, value in enumerate(self[row]):
+                if col in (3, 6):
+                    substring.append(HEAVY_VERTICAL)
+                elif col in (1, 2, 4, 5, 7, 8):
+                    substring.append(LIGHT_VERTICAL)
+                substring.append(f" {value if value != -1 else ' '} ")
+            substring.append(HEAVY_VERTICAL)
+            string.append("".join(substring))
+
+        string.append(HEAVY_BOTTOM)
+
+        return "\n".join(string)
 
 
 if __name__ == "__main__":
-    board = [
+    board = SudokuBoard([
         [-1, -1, -1, 1, 8, 4, -1, -1, -1],
         [-1, -1, 1, -1, -1, -1, 8, -1, -1],
         [-1, 8, -1, 7, -1, 3, -1, 6, -1],
@@ -103,9 +104,9 @@ if __name__ == "__main__":
         [-1, 5, -1, 2, -1, 6, -1, 3, -1],
         [-1, -1, 9, -1, -1, -1, 6, -1, -1],
         [-1, -1, -1, 8, -1, 5, -1, -1, -1]
-    ]
-    pretty_print_sudoku(board)
+    ])
+    print(board)
 
     solved = timeit(solve_sudoku)(board)
-    pretty_print_sudoku(solved)
+    print(solved)
     print(solved.backtracks)
