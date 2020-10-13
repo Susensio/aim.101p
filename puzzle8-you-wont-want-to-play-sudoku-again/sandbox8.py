@@ -1,10 +1,10 @@
 from aim.time import timeit
 
 
-def solve_sudoku(board):
+def solve_sudoku(board, current_row=0, current_col=0):
     # Find an empty cell
-    for row in range(9):
-        for col in range(9):
+    for row in range(current_row, 9):
+        for col in range(current_col if row == current_row else 0, 9):
             if board[row][col] == -1:
                 # Try to place a number
                 for number in range(1, 10):
