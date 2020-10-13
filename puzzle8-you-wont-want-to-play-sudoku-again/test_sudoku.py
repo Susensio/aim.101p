@@ -1,9 +1,10 @@
+from sandbox8 import SudokuBoard
 from pytest import fixture
 
 
-@fixture
-def sudoku_classroom():
-    board = [
+@fixture(scope='function')
+def sudoku_board():
+    return SudokuBoard([
         [-1, -1, -1, 1, 8, 4, -1, -1, -1],
         [-1, -1, 1, -1, -1, -1, 8, -1, -1],
         [-1, 8, -1, 7, -1, 3, -1, 6, -1],
@@ -12,6 +13,5 @@ def sudoku_classroom():
         [3, -1, 4, -1, -1, -1, 5, -1, 8],
         [-1, 5, -1, 2, -1, 6, -1, 3, -1],
         [-1, -1, 9, -1, -1, -1, 6, -1, -1],
-        [-1, -1, -1, 8, -1, 5, -1, -1, -1]
-    ]
-    return board
+        [-1, -1, -1, 8, -1, 5, -1, -1, -1],
+    ])
