@@ -1,4 +1,5 @@
 from aim.time import timeit
+from aim.arrays import Matrix
 
 
 def solve_sudoku(board, current_row=0, current_col=0):
@@ -32,6 +33,8 @@ def solve_sudoku(board, current_row=0, current_col=0):
 def make_implications(board):
     cells_implied = []
 
+    # Only one empty slot in row/column/box
+
     return cells_implied
 
 
@@ -44,15 +47,11 @@ def is_allowed_sudoku_cell(board, row, col, number):
     if not vertical_unique:
         return False
 
-    box_row = row//3
-    box_row_start = box_row*3
-    box_row_end = (box_row+1)*3
-    box_col = col//3
-    box_col_start = box_col*3
-    box_col_end = (box_col+1)*3
+    box_row = row//3 * 3
+    box_col = col//3 * 3
     box = [cell
-           for row in board[box_row_start:box_row_end]
-           for cell in row[box_col_start:box_col_end]]
+           for row in board[box_row:box_row+3]
+           for cell in row[box_col:box_col+3]]
     box_unique = not (number in box)
     if not box_unique:
         return False
@@ -60,12 +59,29 @@ def is_allowed_sudoku_cell(board, row, col, number):
     return True
 
 
-class SudokuBoard(list):
+class SudokuBoard(Matrix):
     __slots__ = ['backtracks']
 
     def __init__(self, *args, **kwargs):
         self.backtracks = 0
         return super().__init__(*args, **kwargs)
+
+    @property
+    def rows(self):
+        return (row for row in self)
+
+    @property
+    def columns(self):
+        for col in range(9):
+            yield [row[col] for row in self]
+
+    @property
+    def boxes(self):
+        for box_row in range(3):
+            for box_col in range(3):
+                yield [cell
+                       for row in board[box_row:box_row+3]
+                       for cell in row[box_col:box_col+3]]
 
     def __str__(self):
         HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
