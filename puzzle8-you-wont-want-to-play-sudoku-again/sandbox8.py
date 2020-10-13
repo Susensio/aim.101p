@@ -12,18 +12,27 @@ def solve_sudoku(board, current_row=0, current_col=0):
                     if allowed:
                         # Continue exploring this branch, i.e. move down the tree
                         board[row][col] = number
-                        attemp = solve_sudoku(board)
+                        cells_implied = make_implications(board)
+                        attemp = solve_sudoku(board, row, col)
                         if attemp:
                             return attemp
                         else:
                             # Revert change and continue with next number
                             board[row][col] = -1
+                            for (row_implied, col_implied) in cells_implied:
+                                board[row_implied][col_implied] = -1
                             board.backtracks += 1
                 # When no number is valid, prune tree and backtrack
                 return
 
     # All cells are traversed
     return board
+
+
+def make_implications(board):
+    cells_implied = []
+
+    return cells_implied
 
 
 def is_allowed_sudoku_cell(board, row, col, number):
