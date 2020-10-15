@@ -66,14 +66,17 @@ class SudokuBoard(Matrix):
         self.backtracks = 0
         return super().__init__(*args, **kwargs)
 
-    @property
-    def rows(self):
-        return (row for row in self)
+    def row(self, row_num):
+        """Sudoku is one-based indexed."""
+        if not (1 <= row_num <= 9):
+            raise IndexError("Sudoku rows are 1 to 9")
+        return self._row(row_num-1)
 
-    @property
-    def columns(self):
-        for col in range(9):
-            yield [row[col] for row in self]
+    def column(self, col_num):
+        """Sudoku is one-based indexed."""
+        if not (1 <= col_num <= 9):
+            raise IndexError("Sudoku columns are 1 to 9")
+        return self._column(col_num-1)
 
     @property
     def boxes(self):
