@@ -32,8 +32,15 @@ def solve_sudoku(board, current_row=0, current_col=0):
 
 def make_implications(board):
     cells_implied = []
+    all_numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 
     # Only one empty slot in row/column/box
+    for row_num, row in enumerate(board.rows):
+        missing = all_numbers - set(row)
+        if len(missing) == 1:
+            col_num = row.index(-1)
+            board[row_num][col_num] = missing.pop()
+            cells_implied.append((row_num, col_num))
 
     return cells_implied
 
