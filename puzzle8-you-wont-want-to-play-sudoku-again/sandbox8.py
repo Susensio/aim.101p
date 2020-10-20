@@ -39,11 +39,11 @@ def make_implications(board):
 
 
 def is_allowed_sudoku_cell(board, row, col, number):
-    horizontal_unique = not (number in board[row])
+    horizontal_unique = not (number in board.row(row))
     if not horizontal_unique:
         return False
 
-    vertical_unique = not (number in [row[col] for row in board])
+    vertical_unique = not (number in board.col(col))
     if not vertical_unique:
         return False
 
@@ -78,13 +78,16 @@ class SudokuBoard(Matrix):
     #         raise IndexError("Sudoku columns are 1 to 9")
     #     return self._column(col_num-1)
 
-    @property
-    def boxes(self):
+    def _boxes_generator(self):
         for box_row in range(3):
             for box_col in range(3):
                 yield [cell
                        for row in board[box_row:box_row+3]
                        for cell in row[box_col:box_col+3]]
+
+    @property
+    def boxes(self):
+        return list(self._boxes_generator())
 
     def __str__(self):
         HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
