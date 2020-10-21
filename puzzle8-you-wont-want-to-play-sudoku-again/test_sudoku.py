@@ -3,7 +3,7 @@ from pytest import fixture
 
 
 @fixture(scope='function')
-def sudoku_board():
+def unsolved():
     return SudokuBoard([
         [-1, -1, -1, 1, 8, 4, -1, -1, -1],
         [-1, -1, 1, -1, -1, -1, 8, -1, -1],
@@ -17,8 +17,9 @@ def sudoku_board():
     ])
 
 
-def test_solve(sudoku_board):
-    solved = [
+@fixture(scope='function')
+def solved():
+    return SudokuBoard([
         [5, 9, 6, 1, 8, 4, 2, 7, 3],
         [7, 3, 1, 6, 2, 9, 8, 5, 4],
         [4, 8, 2, 7, 5, 3, 9, 6, 1],
@@ -28,5 +29,8 @@ def test_solve(sudoku_board):
         [1, 5, 8, 2, 4, 6, 7, 3, 9],
         [2, 4, 9, 3, 7, 1, 6, 8, 5],
         [6, 7, 3, 8, 9, 5, 4, 1, 2],
-    ]
-    assert solve_sudoku(sudoku_board) == solved
+    ])
+
+
+def test_solve(unsolved):
+    assert solve_sudoku(unsolved).solved is True

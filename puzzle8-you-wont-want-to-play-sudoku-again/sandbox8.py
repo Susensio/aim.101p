@@ -13,15 +13,15 @@ def solve_sudoku(board, current_row=0, current_col=0):
                     if allowed:
                         # Continue exploring this branch, i.e. move down the tree
                         board[row][col] = number
-                        cells_implied = make_implications(board)
+                        # cells_implied = make_implications(board)
                         attemp = solve_sudoku(board, row, col)
                         if attemp:
                             return attemp
                         else:
                             # Revert change and continue with next number
                             board[row][col] = -1
-                            for (row_implied, col_implied) in cells_implied:
-                                board[row_implied][col_implied] = -1
+                            # for (row_implied, col_implied) in cells_implied:
+                            #     board[row_implied][col_implied] = -1
                             board.backtracks += 1
                 # When no number is valid, prune tree and backtrack
                 return
@@ -36,11 +36,24 @@ def make_implications(board):
 
     # Only one empty slot in row/column/box
     for row_num, row in enumerate(board.rows):
-        missing = all_numbers - set(row)
-        if len(missing) == 1:
-            col_num = row.index(-1)
-            board[row_num][col_num] = missing.pop()
-            cells_implied.append((row_num, col_num))
+        if -1 in row:
+            missing = all_numbers - set(row)
+            if len(missing) == 1:
+                col_num = row.index(-1)
+                missing_value = missing.pop()
+                if is_allowed_sudoku_cell(board, row_num, col_num, missing_value):
+                    board[row_num][col_num] = missing_value
+                    cells_implied.append((row_num, col_num))
+
+    for col_num, col in enumerate(board.columns):
+        if -1 in col:
+            missing = all_numbers - set(col)
+            if len(missing) == 1 and -1 in col:
+                row_num = col.index(-1)
+                missing_value = missing.pop()
+                if is_allowed_sudoku_cell(board, row_num, col_num, missing_value):
+                    board[row_num][col_num] = missing_value
+                    cells_implied.append((row_num, col_num))
 
     return cells_implied
 
@@ -54,12 +67,7 @@ def is_allowed_sudoku_cell(board, row, col, number):
     if not vertical_unique:
         return False
 
-    box_row = row//3 * 3
-    box_col = col//3 * 3
-    box = [cell
-           for row in board[box_row:box_row+3]
-           for cell in row[box_col:box_col+3]]
-    box_unique = not (number in box)
+    box_unique = not (number in board.box(row, col))
     if not box_unique:
         return False
 
@@ -68,6 +76,7 @@ def is_allowed_sudoku_cell(board, row, col, number):
 
 class SudokuBoard(Matrix):
     __slots__ = ['backtracks']
+    VALUES = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 
     def __init__(self, *args, **kwargs):
         self.backtracks = 0
@@ -86,15 +95,37 @@ class SudokuBoard(Matrix):
     #     return self._column(col_num-1)
 
     def _boxes_generator(self):
-        for box_row in range(3):
-            for box_col in range(3):
+        for box_row in range(0, 9, 3):
+            for box_col in range(0, 9, 3):
                 yield [cell
-                       for row in board[box_row:box_row+3]
+                       for row in self[box_row:box_row+3]
                        for cell in row[box_col:box_col+3]]
+
+    def box(self, row, col):
+        """
+        0   1   2
+        3   4   5
+        6   7   8
+        """
+        box_num = row//3*3 + col//3
+        return self.boxes[box_num]
 
     @property
     def boxes(self):
         return list(self._boxes_generator())
+
+    @property
+    def solved(self):
+        for row in self.rows:
+            if set(row) != self.VALUES:
+                return False
+        for col in self.columns:
+            if set(col) != self.VALUES:
+                return False
+        for box in self.boxes:
+            if set(box) != self.VALUES:
+                return False
+        return True
 
     def __str__(self):
         HEAVY_UPPER = "┏━━━┯━━━┯━━━┳━━━┯━━━┯━━━┳━━━┯━━━┯━━━┓"
@@ -145,6 +176,7 @@ if __name__ == "__main__":
     ])
     print(board)
 
-    solved = timeit(solve_sudoku)(board)
-    print(solved)
-    print(solved.backtracks)
+    timeit(solve_sudoku)(board)
+    print(board)
+    print(board.solved)
+    print(board.backtracks)
