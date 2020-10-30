@@ -22,7 +22,7 @@ Part of my self-made [Artificial Intelligence Master](https://github.com/Susensi
 
 ## Requirements
 
-[AIM Common](github.com/Susensio/aim.common) library is required
+[AIM Common](https://github.com/Susensio/aim.common) library is required
     
     pip install -e git://github.com/Susensio/aim.common#egg=aim-common
 
