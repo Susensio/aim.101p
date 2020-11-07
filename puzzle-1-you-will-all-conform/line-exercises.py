@@ -74,7 +74,8 @@ def pleaseConformOnepass(caps):
                               start, 'through', i-1, 'flip your caps!')
 
 
-# pleaseConformOpt(caps)
-# pleaseConformOnepass(caps)
-# pleaseConformOnepass([])
-pleaseConformOpt(cap3)
+if __name__ == "__main__":
+    # pleaseConformOpt(caps)
+    # pleaseConformOnepass(caps)
+    # pleaseConformOnepass([])
+    pleaseConformOpt(cap3)

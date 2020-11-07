@@ -81,5 +81,4 @@ def EightQueens(location=None, solutions=-1, n=8):
 
 
 if __name__ == "__main__":
-
     EightQueens([-1, 4, -1, -1, -1, -1, -1, 0])

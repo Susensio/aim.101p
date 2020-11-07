@@ -76,4 +76,5 @@ def FourQueens(n=4):
     return
 
 
-FourQueens()
+if __name__ == "__main__":
+    FourQueens()

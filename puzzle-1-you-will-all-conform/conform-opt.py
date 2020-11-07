@@ -50,5 +50,6 @@ def pleaseConformOnepass(caps):
                 print(' through', i-1, 'flip your caps!')
 
 
-pleaseConformOpt(caps)
-pleaseConformOnepass(caps)
+if __name__ == "__main__":
+    pleaseConformOpt(caps)
+    pleaseConformOnepass(caps)

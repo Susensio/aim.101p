@@ -74,5 +74,6 @@ def chooseTimeConstrained(times, ystart, yend):
     return maxcount, time
 
 
-# bestTimeToPartySmart(sched2, 7.0, 9.0)
-bestTimeToPartySmart(sched2, 10.0, 12.0)
+if __name__ == "__main__":
+    # bestTimeToPartySmart(sched2, 7.0, 9.0)
+    bestTimeToPartySmart(sched2, 10.0, 12.0)

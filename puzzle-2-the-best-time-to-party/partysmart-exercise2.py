@@ -36,6 +36,7 @@ def bestTimeToPartyInterval(schedule):
     return time
 
 
-assert bestTimeToPartyInterval(sched) == 9
-assert bestTimeToPartyInterval(sched2) == 9.5
-assert bestTimeToPartyInterval(sched3) == 11
+if __name__ == "__main__":
+    assert bestTimeToPartyInterval(sched) == 9
+    assert bestTimeToPartyInterval(sched2) == 9.5
+    assert bestTimeToPartyInterval(sched3) == 11

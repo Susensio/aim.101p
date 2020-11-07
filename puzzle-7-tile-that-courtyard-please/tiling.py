@@ -80,5 +80,6 @@ def printYard(yard):
         print(row)
 
 
-printYard(tileMissingYard(3, 4, 6))
-printYard(tileMissingYard(4, 5, 7))
+if __name__ == "__main__":
+    printYard(tileMissingYard(3, 4, 6))
+    printYard(tileMissingYard(4, 5, 7))
