@@ -53,16 +53,19 @@ def _solve(board):
         if len(implications_found) == 0:
             # No more implications found, continue normal solving
             break
+        else:
+            assert True
         for cell, value in implications_found:
-            if is_valid_cell(board, cell, value):
-                # Save implied cells
-                row, col = cell
-                board[row, col] = value
-                implied_cells.append(cell)
-            else:
-                # Abort this solve
-                erase_cells(board, implied_cells)
-                return False
+            if cell not in implied_cells:
+                # Do not check double implications
+                if is_valid_cell(board, cell, value):
+                    # Save implied cells
+                    board[cell] = value
+                    implied_cells.append(cell)
+                else:
+                    # Abort this solve
+                    erase_cells(board, implied_cells)
+                    return False
 
     cell_found = find_next_cell(board)
     if not cell_found:
@@ -82,12 +85,12 @@ def _solve(board):
                     backtracks += 1
 
         board[cell_found] = 0
-        # erase_cells(board, implied_cells)
-
+        erase_cells(board, implied_cells)
         return False
 
 
 def find_implications(board):
+    # TODO: Ojo que ahora solo estoy buscando implicaciones en filas y columnas, faltas boxes.
     implications = []
     ALL_NUMBERS = set(range(10))
 
@@ -117,11 +120,14 @@ def erase_cells(board, cells):
 
 def is_valid_cell(board, cell, value=None):
     if value is None:
-        # Value is already placed in cell
+        # Check value already placed in cell
         value = board[cell]
         max_count = 1
     else:
         max_count = 0
+
+    if value == 0:
+        return False
 
     row, col = cell
     # Row
@@ -172,9 +178,25 @@ if __name__ == "__main__":
     timeit(solve)(easy_board)
     print(f"{is_solved(easy_board)=}")
 
-    # print("\n\n\n")
+    print("\n\n\n")
 
     # print_sudoku(medium_board)
     # print(f"{is_solved(medium_board)=}\n")
     # timeit(solve)(medium_board)
     # print(f"{is_solved(medium_board)=}")
+
+    # almost = np.array([
+    #     [5, 9, 6, 1, 8, 4, 2, 7, 3],
+    #     [7, 3, 1, 6, 2, 9, 8, 5, 4],
+    #     [4, 8, 2, 7, 5, 3, 9, 6, 1],
+    #     [9, 2, 7, 5, 3, 8, 1, 4, 6],
+    #     [8, 1, 5, 4, 0, 2, 3, 9, 7],
+    #     [3, 6, 4, 9, 1, 7, 5, 2, 8],
+    #     [1, 5, 8, 2, 4, 6, 7, 3, 9],
+    #     [2, 4, 9, 3, 7, 1, 6, 8, 5],
+    #     [6, 7, 3, 8, 9, 5, 4, 1, 2],
+    # ])
+    # print_sudoku(almost)
+    # print(f"{is_solved(almost)=}\n")
+    # timeit(solve)(almost)
+    # print(f"{is_solved(almost)=}")

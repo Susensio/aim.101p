@@ -33,6 +33,12 @@ def solved():
     ])
 
 
+@fixture(scope='function')
+def one_missing(solved):
+    solved[4, 4] = 0
+    return solved
+
+
 def test_find_next_cell(unsolved):
     assert find_next_cell(unsolved) == (0, 0)
     unsolved[0, 0] = 7
@@ -45,6 +51,36 @@ def test_find_next_cell_not_found(solved):
 
 def test_is_solved(solved):
     assert is_solved(solved) is True
+
+
+def test_is_valid_cell_zero_placed(one_missing):
+    cell = (4, 4)
+    assert is_valid_cell(one_missing, cell) is False
+
+
+def test_is_valid_cell_zero(one_missing):
+    cell = (0, 0)
+    value = 0
+    assert is_valid_cell(one_missing, cell, value) is False
+
+
+def test_is_valid_cell_already_placed(solved):
+    cell = (4, 4)
+    value = solved[cell]
+    assert is_valid_cell(one_missing, cell, value) is True
+
+
+def test_is_valid_cell_already_placed_wrong(solved):
+    cell = (4, 4)
+    value = solved[cell]
+    solved[cell] = value+1
+    assert is_valid_cell(one_missing, cell, value) is True
+
+
+def test_is_not_valid_cell_already_placed(solved):
+    cell = (4, 4)
+    value = solved[cell]+1
+    assert is_valid_cell(one_missing, cell, value) is False
 
 
 def test_is_valid_cell(unsolved):
