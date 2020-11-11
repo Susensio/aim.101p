@@ -1,6 +1,6 @@
 import numpy as np
 from pytest import fixture
-from sandbox8np import is_valid_cell
+from sandbox8np import is_valid_cell, find_next_cell, is_solved
 
 
 @fixture(scope='function')
@@ -31,6 +31,20 @@ def solved():
         [2, 4, 9, 3, 7, 1, 6, 8, 5],
         [6, 7, 3, 8, 9, 5, 4, 1, 2],
     ])
+
+
+def test_find_next_cell(unsolved):
+    assert find_next_cell(unsolved) == (0, 0)
+    unsolved[0, 0] = 7
+    assert find_next_cell(unsolved) == (0, 1)
+
+
+def test_find_next_cell_not_found(solved):
+    assert find_next_cell(solved) is None
+
+
+def test_is_solved(solved):
+    assert is_solved(solved) is True
 
 
 def test_is_valid_cell(unsolved):
