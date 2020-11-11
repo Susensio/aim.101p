@@ -54,10 +54,8 @@ def _solve(board):
         print(f"{backtracks=}")
         return True
     else:
-        row, col = cell_found
-
-        while board[row, col] < 9:
-            board[row, col] += 1
+        while board[cell_found] < 9:
+            board[cell_found] += 1
 
             if is_valid_cell(board, cell_found):
                 if _solve(board):
@@ -65,26 +63,30 @@ def _solve(board):
                 else:
                     backtracks += 1
 
-        board[row, col] = 0
+        board[cell_found] = 0
         return False
 
 
 def is_valid_cell(board, cell, value=None):
-    row, col = cell
     if value is None:
-        value = board[row, col]
+        # Value is already placed in cell
+        value = board[cell]
+        max_count = 1
+    else:
+        max_count = 0
 
+    row, col = cell
     # Row
-    if np.count_nonzero(board[row, :] == value) > 1:
+    if np.count_nonzero(board[row, :] == value) > max_count:
         return False
 
     # Column
-    if np.count_nonzero(board[:, col] == value) > 1:
+    if np.count_nonzero(board[:, col] == value) > max_count:
         return False
 
     # Box
     box = board[box_slice(row, col)]
-    if np.count_nonzero(box == value) > 1:
+    if np.count_nonzero(box == value) > max_count:
         return False
 
     return True
@@ -99,7 +101,7 @@ def box_slice(row, col):
 def find_next_cell(board):
     empty_cells = np.argwhere(board == 0)
     if len(empty_cells) > 0:
-        return empty_cells[0].tolist()
+        return tuple(empty_cells[0])
     else:
         return None
 
