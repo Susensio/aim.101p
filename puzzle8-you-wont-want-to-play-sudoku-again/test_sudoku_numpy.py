@@ -35,8 +35,9 @@ def solved():
 
 @fixture(scope='function')
 def one_missing(solved):
-    solved[4, 4] = 0
-    return solved
+    board = solved.copy()
+    board[4, 4] = 0
+    return board
 
 
 def test_find_next_cell(unsolved):

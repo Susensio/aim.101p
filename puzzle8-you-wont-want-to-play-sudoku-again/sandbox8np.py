@@ -119,8 +119,8 @@ def erase_cells(board, cells):
 
 
 def is_valid_cell(board, cell, value=None):
-    if value is None:
-        # Check value already placed in cell
+    if value is None or value == board[cell]:
+        # Value already placed in cell
         value = board[cell]
         max_count = 1
     else:
