@@ -1,7 +1,6 @@
 import numpy as np
 from sandbox8 import SudokuBoard
 from aim.time import timeit
-from time import sleep
 
 
 def print_sudoku(board): return print(SudokuBoard.__str__(board))
@@ -46,6 +45,25 @@ def _solve(board):
 
     global backtracks
 
+    implied_cells = []
+
+    # Make multiple passes until nothing changes
+    while True:
+        implications_found = find_implications(board)
+        if len(implications_found) == 0:
+            # No more implications found, continue normal solving
+            break
+        for cell, value in implications_found:
+            if is_valid_cell(board, cell, value):
+                # Save implied cells
+                row, col = cell
+                board[row, col] = value
+                implied_cells.append(cell)
+            else:
+                # Abort this solve
+                erase_cells(board, implied_cells)
+                return False
+
     cell_found = find_next_cell(board)
     if not cell_found:
         # Solved!
@@ -64,7 +82,37 @@ def _solve(board):
                     backtracks += 1
 
         board[cell_found] = 0
+        # erase_cells(board, implied_cells)
+
         return False
+
+
+def find_implications(board):
+    implications = []
+    ALL_NUMBERS = set(range(10))
+
+    for row_num in range(9):
+        row = board[row_num]
+        if np.count_nonzero(row) == 8:
+            value_missing = (ALL_NUMBERS-set(row)).pop()
+            col_num = np.where(row == 0)[0][0]
+            cell = row_num, col_num
+            implications.append((cell, value_missing))
+
+    for col_num in range(9):
+        col = board[:, col_num]
+        if np.count_nonzero(col) == 8:
+            value_missing = (ALL_NUMBERS-set(col)).pop()
+            row_num = np.where(col == 0)[0][0]
+            cell = row_num, col_num
+            implications.append((cell, value_missing))
+
+    return implications
+
+
+def erase_cells(board, cells):
+    for cell in cells:
+        board[cell] = 0
 
 
 def is_valid_cell(board, cell, value=None):
@@ -96,6 +144,12 @@ def box_slice(row, col):
     box_row = row//3 * 3
     box_col = col//3 * 3
     return slice(box_row, box_row+3), slice(box_col, box_col+3)
+
+
+def boxes_iterator(board):
+    for row in (0, 3, 6):
+        for col in (0, 3, 6):
+            yield board[box_slice(row, col)]
 
 
 def find_next_cell(board):
