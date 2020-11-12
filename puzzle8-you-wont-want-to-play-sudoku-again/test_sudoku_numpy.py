@@ -35,7 +35,7 @@ def solved():
 
 @fixture(scope='function')
 def one_missing(solved):
-    board = solved.copy()
+    board = np.array(solved)
     board[4, 4] = 0
     return board
 
@@ -62,25 +62,6 @@ def test_is_valid_cell_zero_placed(one_missing):
 def test_is_valid_cell_zero(one_missing):
     cell = (0, 0)
     value = 0
-    assert is_valid_cell(one_missing, cell, value) is False
-
-
-def test_is_valid_cell_already_placed(solved):
-    cell = (4, 4)
-    value = solved[cell]
-    assert is_valid_cell(one_missing, cell, value) is True
-
-
-def test_is_valid_cell_already_placed_wrong(solved):
-    cell = (4, 4)
-    value = solved[cell]
-    solved[cell] = value+1
-    assert is_valid_cell(one_missing, cell, value) is True
-
-
-def test_is_not_valid_cell_already_placed(solved):
-    cell = (4, 4)
-    value = solved[cell]+1
     assert is_valid_cell(one_missing, cell, value) is False
 
 
@@ -134,3 +115,22 @@ def test_is_not_valid_cell_box_value_placed(unsolved):
     value = 7
     unsolved[cell] = value
     assert is_valid_cell(unsolved, cell) is False
+
+
+def test_is_valid_cell_already_placed(solved):
+    cell = (4, 4)
+    value = solved[cell]
+    assert is_valid_cell(solved, cell, value) is True
+
+
+def test_is_valid_cell_already_placed_wrong(solved):
+    cell = (4, 4)
+    value = solved[cell]
+    solved[cell] = value+1
+    assert is_valid_cell(solved, cell, value) is True
+
+
+def test_is_not_valid_cell_already_placed(solved):
+    cell = (4, 4)
+    value = solved[cell]+1
+    assert is_valid_cell(solved, cell, value) is False
