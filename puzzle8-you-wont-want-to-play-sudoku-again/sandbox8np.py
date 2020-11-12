@@ -90,7 +90,6 @@ def _solve(board):
 
 
 def find_implications(board):
-    # TODO: Ojo que ahora solo estoy buscando implicaciones en filas y columnas, faltas boxes.
     implications = []
     ALL_NUMBERS = set(range(10))
 
@@ -108,6 +107,13 @@ def find_implications(board):
             value_missing = (ALL_NUMBERS-set(col)).pop()
             row_num = np.where(col == 0)[0][0]
             cell = row_num, col_num
+            implications.append((cell, value_missing))
+
+    for (row_offset, col_offset), box in boxes_iterator(board):
+        if np.count_nonzero(box) == 8:
+            value_missing = (ALL_NUMBERS-set(box.flatten())).pop()
+            row_num, col_num = [index[0] for index in np.where(box == 0)]
+            cell = (row_num+row_offset, col_num+col_offset)
             implications.append((cell, value_missing))
 
     return implications
@@ -155,7 +161,8 @@ def box_slice(row, col):
 def boxes_iterator(board):
     for row in (0, 3, 6):
         for col in (0, 3, 6):
-            yield board[box_slice(row, col)]
+            offset = row, col
+            yield offset, board[box_slice(row, col)]
 
 
 def find_next_cell(board):
