@@ -91,30 +91,36 @@ def _solve(board):
 
 def find_implications(board):
     implications = []
-    ALL_NUMBERS = set(range(10))
+    ALL_NUMBERS = set(range(1, 10))
 
     for row_num in range(9):
         row = board[row_num]
-        if np.count_nonzero(row) == 8:
-            value_missing = (ALL_NUMBERS-set(row)).pop()
+        values_missing = (ALL_NUMBERS-set(row))
+        if len(values_missing) == 1:
             col_num = np.where(row == 0)[0][0]
             cell = row_num, col_num
-            implications.append((cell, value_missing))
+            implications.append((cell, values_missing.pop()))
+        else:
+            ...
 
     for col_num in range(9):
         col = board[:, col_num]
-        if np.count_nonzero(col) == 8:
-            value_missing = (ALL_NUMBERS-set(col)).pop()
+        values_missing = (ALL_NUMBERS-set(col))
+        if len(values_missing) == 1:
             row_num = np.where(col == 0)[0][0]
             cell = row_num, col_num
-            implications.append((cell, value_missing))
+            implications.append((cell, values_missing.pop()))
+        else:
+            ...
 
     for (row_offset, col_offset), box in boxes_iterator(board):
-        if np.count_nonzero(box) == 8:
-            value_missing = (ALL_NUMBERS-set(box.flatten())).pop()
+        values_missing = (ALL_NUMBERS-set(box.flatten()))
+        if len(values_missing) == 1:
             row_num, col_num = [index[0] for index in np.where(box == 0)]
             cell = (row_num+row_offset, col_num+col_offset)
-            implications.append((cell, value_missing))
+            implications.append((cell, values_missing.pop()))
+        else:
+            ...
 
     return implications
 
