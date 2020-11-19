@@ -1,4 +1,5 @@
 from math import log2
+from aim.arrays import Matrix
 
 STATUE = object()
 
@@ -150,28 +151,13 @@ def split_into_quadrants(board, quadrant_preference=4):
     middle_col = int(len(board[0]) / 2 +
                      (0.5 if quadrant_preference in (2, 3) else 0)
                      )
-    board = SlizableMatrix(board)
+    board = Matrix(board)
 
     q1 = board[:middle_row, middle_col:]
     q2 = board[:middle_row, :middle_col]
     q3 = board[middle_row:, :middle_col]
     q4 = board[middle_row:, middle_col:]
     return {1: q1, 2: q2, 3: q3, 4: q4}
-
-
-class SlizableMatrix:
-    def __init__(self, matrix):
-        self.matrix = matrix
-
-    def __getitem__(self, arg):
-        rows, cols = arg
-        try:
-            return [row[cols] for row in self.matrix[rows]]
-        except TypeError:
-            return self.matrix[rows][cols]
-
-    def __repr__(self):
-        return repr(self.matrix)
 
 
 def merge_from_quadrants(boards):
