@@ -24,7 +24,7 @@ def findNextCellToFill(grid):
 # This procedure checks if setting the (i, j) square to e is valid
 
 
-def isValid(grid, i, j, e):
+def isValid(grid, i, j, e, diagonals=False):
     rowOk = all([e != grid[i][x] for x in range(9)])
     if rowOk:
         columnOk = all([e != grid[x][j] for x in range(9)])
@@ -35,6 +35,15 @@ def isValid(grid, i, j, e):
             for x in range(secTopX, secTopX+3):
                 for y in range(secTopY, secTopY+3):
                     if grid[x][y] == e:
+                        return False
+            if diagonals:
+                if i == j:
+                    diagonalOk = all([e != grid[k][k] for k in range(9)])
+                    if not diagonalOk:
+                        return False
+                if i == (8-j):
+                    diagonalOk = all([e != grid[k][8-k] for k in range(9)])
+                    if not diagonalOk:
                         return False
             return True
     return False
@@ -107,7 +116,7 @@ def undoImplications(grid, impl):
 # This procedure fills in the missing squares of a Sudoku puzzle
 # obeying the Sudoku rules by guessing when it has to and performing
 # implications when it can
-def solveSudokuOpt(grid, i=0, j=0):
+def solveSudokuOpt(grid, i=0, j=0, diagonals=False):
 
     global backtracks
 
@@ -122,7 +131,7 @@ def solveSudokuOpt(grid, i=0, j=0):
 
             impl = makeImplications(grid, i, j, e)
 
-            if solveSudokuOpt(grid, i, j):
+            if solveSudokuOpt(grid, i, j, diagonals):
                 return True
             # Undo the current cell for backtracking
             backtracks += 1
@@ -181,19 +190,36 @@ diff = [[0, 0, 5, 3, 0, 0, 0, 0, 0],
         [0, 0, 4, 0, 0, 0, 0, 3, 0],
         [0, 0, 0, 0, 0, 9, 7, 0, 0]]
 
+diag = [[1, 0, 5, 7, 0, 2, 6, 3, 8],
+        [2, 0, 0, 0, 0, 6, 0, 0, 5],
+        [0, 6, 3, 8, 4, 0, 2, 1, 0],
+        [0, 5, 9, 2, 0, 1, 3, 8, 0],
+        [0, 0, 2, 0, 5, 8, 0, 0, 9],
+        [7, 1, 0, 0, 3, 0, 5, 0, 2],
+        [0, 0, 4, 5, 6, 0, 7, 2, 0],
+        [5, 0, 0, 0, 0, 4, 0, 6, 3],
+        [3, 2, 6, 1, 0, 7, 0, 0, 4]]
 
-solveSudokuOpt(inp2)
-printSudoku(inp2)
-print('Backtracks = ', backtracks)
+if __name__ == "__main__":
 
+    # backtracks = 0
+    # solveSudokuOpt(inp2)
+    # printSudoku(inp2)
+    # print('Backtracks = ', backtracks)
 
-backtracks = 0
-print(solveSudokuOpt(hard))
-printSudoku(hard)
-print('Backtracks = ', backtracks)
+    # backtracks = 0
+    # print(solveSudokuOpt(hard))
+    # printSudoku(hard)
+    # print('Backtracks = ', backtracks)
 
-backtracks = 0
-printSudoku(diff)
-print(solveSudokuOpt(diff))
-printSudoku(diff)
-print('Backtracks = ', backtracks)
+    # backtracks = 0
+    # printSudoku(diff)
+    # print(solveSudokuOpt(diff))
+    # printSudoku(diff)
+    # print('Backtracks = ', backtracks)
+
+    backtracks = 0
+    printSudoku(diag)
+    print(solveSudokuOpt(diag, diagonals=True))
+    printSudoku(diag)
+    print('Backtracks = ', backtracks)
