@@ -17,14 +17,14 @@ def findNextCellToFill(grid):
     # Look for an unfilled grid location
     for x in range(0, 9):
         for y in range(0, 9):
-            if grid[x][y] == 0:
+            if grid[x][y] in {0, -2}:
                 return x, y
     return -1, -1
 
 # This procedure checks if setting the (i, j) square to e is valid
 
 
-def isValid(grid, i, j, e, diagonals=False):
+def isValid(grid, i, j, e, diagonal=False, even=False):
     rowOk = all([e != grid[i][x] for x in range(9)])
     if rowOk:
         columnOk = all([e != grid[x][j] for x in range(9)])
@@ -36,7 +36,7 @@ def isValid(grid, i, j, e, diagonals=False):
                 for y in range(secTopY, secTopY+3):
                     if grid[x][y] == e:
                         return False
-            if diagonals:
+            if diagonal:
                 if i == j:
                     diagonalOk = all([e != grid[k][k] for k in range(9)])
                     if not diagonalOk:
@@ -45,17 +45,21 @@ def isValid(grid, i, j, e, diagonals=False):
                     diagonalOk = all([e != grid[k][8-k] for k in range(9)])
                     if not diagonalOk:
                         return False
+            if even:
+                if grid[i][j] == -2 and e % 2 == 1:
+                    return False
             return True
     return False
 
 
 # This procedure makes implications based on existing numbers on squares
-def makeImplications(grid, i, j, e):
+def makeImplications(grid, i, j, e, diagonal, even):
 
     global sectors
 
+    prev = grid[i][j]
     grid[i][j] = e
-    impl = [(i, j, e)]
+    impl = [(i, j, e, prev)]
 
     while True:
         previous_implication_counter = len(impl)
@@ -67,13 +71,13 @@ def makeImplications(grid, i, j, e):
             vset = {1, 2, 3, 4, 5, 6, 7, 8, 9}
             for x in range(sectors[k][0], sectors[k][1]):
                 for y in range(sectors[k][2], sectors[k][3]):
-                    if grid[x][y] != 0:
+                    if grid[x][y] not in {0, -2}:
                         vset.remove(grid[x][y])
 
             # attach copy of vset to each missing square in ith sector
             for x in range(sectors[k][0], sectors[k][1]):
                 for y in range(sectors[k][2], sectors[k][3]):
-                    if grid[x][y] == 0:
+                    if grid[x][y] in {0, -2}:
                         sectinfo.append([x, y, vset.copy()])
 
             for m in range(len(sectinfo)):
@@ -94,9 +98,10 @@ def makeImplications(grid, i, j, e):
                 # check if the vset is a singleton
                 if len(left) == 1:
                     val = left.pop()
-                    if isValid(grid, sin[0], sin[1], val):
+                    if isValid(grid, sin[0], sin[1], val, diagonal, even):
+                        prev = grid[sin[0]][sin[1]]
                         grid[sin[0]][sin[1]] = val
-                        impl.append((sin[0], sin[1], val))
+                        impl.append((sin[0], sin[1], val, prev))
 
         if previous_implication_counter == len(impl):
             # Nothing changed
@@ -109,14 +114,14 @@ def makeImplications(grid, i, j, e):
 
 def undoImplications(grid, impl):
     for i in range(len(impl)):
-        grid[impl[i][0]][impl[i][1]] = 0
+        grid[impl[i][0]][impl[i][1]] = impl[i][3]
     return
 
 
 # This procedure fills in the missing squares of a Sudoku puzzle
 # obeying the Sudoku rules by guessing when it has to and performing
 # implications when it can
-def solveSudokuOpt(grid, i=0, j=0, diagonals=False):
+def solveSudokuOpt(grid, i=0, j=0, diagonal=False, even=False):
 
     global backtracks
 
@@ -127,11 +132,11 @@ def solveSudokuOpt(grid, i=0, j=0, diagonals=False):
 
     for e in range(1, 10):
         # Try different values in i, j location
-        if isValid(grid, i, j, e):
+        if isValid(grid, i, j, e, diagonal, even):
 
-            impl = makeImplications(grid, i, j, e)
+            impl = makeImplications(grid, i, j, e, diagonal, even)
 
-            if solveSudokuOpt(grid, i, j, diagonals):
+            if solveSudokuOpt(grid, i, j, diagonal, even):
                 return True
             # Undo the current cell for backtracking
             backtracks += 1
@@ -200,6 +205,16 @@ diag = [[1, 0, 5, 7, 0, 2, 6, 3, 8],
         [5, 0, 0, 0, 0, 4, 0, 6, 3],
         [3, 2, 6, 1, 0, 7, 0, 0, 4]]
 
+even = [[8, 4, 0, 0, 5, 0, -2, 0, 0],
+        [3, 0, 0, 6, 0, 8, 0, 4, 0],
+        [0, 0, -2, 4, 0, 9, 0, 0, -2],
+        [0, 2, 3, 0, -2, 0, 9, 8, 0],
+        [1, 0, 0, -2, 0, -2, 0, 0, 4],
+        [0, 9, 8, 0, -2, 0, 1, 6, 0],
+        [-2, 0, 0, 5, 0, 3, -2, 0, 0],
+        [0, 3, 0, 1, 0, 6, 0, 0, 7],
+        [0, 0, -2, 0, 2, 0, 0, 1, 3]]
+
 if __name__ == "__main__":
 
     # backtracks = 0
@@ -218,8 +233,14 @@ if __name__ == "__main__":
     # printSudoku(diff)
     # print('Backtracks = ', backtracks)
 
+    # backtracks = 0
+    # printSudoku(diag)
+    # print(solveSudokuOpt(diag, diagonal=True))
+    # printSudoku(diag)
+    # print('Backtracks = ', backtracks)
+
     backtracks = 0
-    printSudoku(diag)
-    print(solveSudokuOpt(diag, diagonals=True))
-    printSudoku(diag)
+    printSudoku(even)
+    print(solveSudokuOpt(even, even=True))
+    printSudoku(even)
     print('Backtracks = ', backtracks)
