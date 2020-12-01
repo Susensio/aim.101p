@@ -10,6 +10,8 @@
 # It only uses one element worth of additional storage for the pivot!
 def pivotPartitionClever(lst, start, end):
     moves = 0
+    iterations = 0
+
     pivot = lst[end]
     bottom = start - 1
     top = end
@@ -18,6 +20,7 @@ def pivotPartitionClever(lst, start, end):
     while not done:
 
         while not done:
+            iterations += 1
             # Move rightward from left searching for element > pivot
             bottom += 1
             if bottom == top:
@@ -30,6 +33,7 @@ def pivotPartitionClever(lst, start, end):
                 break
 
         while not done:
+            iterations += 1
             # Move leftward from right searching for element < pivot
             top -= 1
             if top == bottom:
@@ -43,32 +47,52 @@ def pivotPartitionClever(lst, start, end):
 
     lst[top] = pivot
     # print (lst)
-    return top, moves
+    return top, moves, iterations
 
 
 def quicksort(lst, start=0, end=None):
-    moves = 0
+    total_moves = 0
+    total_iterations = 0
     if end is None:
         end = len(a) - 1
     if start < end:
         # print ('Partition start: bottom =', start - 1, 'top = ', end)
         # print (lst)
-        split, moves = pivotPartitionClever(lst, start, end)
+        split, moves, iterations = pivotPartitionClever(lst, start, end)
+        total_moves += moves
+        total_iterations = iterations
         # print ('Partition end')
-        moves += quicksort(lst, start, split - 1)
-        moves += quicksort(lst, split + 1, end)
-    return moves
+        moves, iterations = quicksort(lst, start, split - 1)
+        total_moves += moves
+        total_iterations += iterations
+
+        moves, iterations = quicksort(lst, split + 1, end)
+        total_moves += moves
+        total_iterations += iterations
+    return total_moves, total_iterations
 
 
 if __name__ == "__main__":
     a = [4, 65, 2, -31, 0, 99, 83, 782, 1]
     print('Initial list is:', a)
-    moves = quicksort(a)
+    moves, iterations = quicksort(a)
     print('Sorted list is:', a)
     assert moves == 9
+    assert iterations == 24
+    print(f"{iterations=}")
 
     already_sorted = list(range(100))
-    moves = quicksort(already_sorted)
+    moves, iterations = quicksort(already_sorted)
     assert moves == 0
+    print("\nSorted list sorting")
+    print(f"{iterations=}")
+
+    random = [0] * 100
+    random[0] = 29
+    for i in range(100):
+        random[i] = (9679 * random[i-1] + 12637 * i) % 2287
+    moves, iterations = quicksort(random)
+    print("\nRandom list sorting")
+    print(f"{iterations=}")
 
     b = [4, 4, 65, 2, -31, 0, 99, 83, -31, 782, 1]
