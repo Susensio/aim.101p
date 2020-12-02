@@ -15,7 +15,7 @@ Part of my self-made [Artificial Intelligence Master](https://github.com/Susensi
 - [X] 6: A Profusion Of Queens
 - [X] 7: Tile That Courtyard Please
 - [ ] 8: You Wont Want To Play Sudoku Again
-- [ ] 9: The Disorganized Handyman
+- [X] 9: The Disorganized Handyman
 - [ ] 10: A Weekend To Remember
 - [ ] 11: Memory Serves You Well
 
