@@ -54,7 +54,7 @@ def quicksort(lst, start=0, end=None):
     total_moves = 0
     total_iterations = 0
     if end is None:
-        end = len(a) - 1
+        end = len(lst) - 1
     if start < end:
         # print ('Partition start: bottom =', start - 1, 'top = ', end)
         # print (lst)
@@ -70,6 +70,22 @@ def quicksort(lst, start=0, end=None):
         total_moves += moves
         total_iterations += iterations
     return total_moves, total_iterations
+
+
+def quickselect(lst, k, start=0, end=None):
+    if end is None:
+        end = len(lst) - 1
+    if start < end:
+        split, *_ = pivotPartitionClever(lst, start, end)
+
+        if split == k:
+            return lst[k]
+        elif split > k:
+            return quickselect(lst, k, start, split - 1)
+        else:
+            return quickselect(lst, k, split + 1, end)
+    else:
+        return lst[k]
 
 
 if __name__ == "__main__":
@@ -95,4 +111,7 @@ if __name__ == "__main__":
     print("\nRandom list sorting")
     print(f"{iterations=}")
 
-    b = [4, 4, 65, 2, -31, 0, 99, 83, -31, 782, 1]
+    print("\nQuick selection")
+    b = [4, 65, 2, -31, 0, 99, 83, 782, 1]
+    k = 5
+    assert sorted(b)[k] == quickselect(b, k)
