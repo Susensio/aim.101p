@@ -46,14 +46,21 @@ graph_disconnected = {
     'I': ['F']
 }
 
+graphc = {'A': ['B', 'D', 'C'],
+          'B': ['C', 'A', 'B'],
+          'C': ['D', 'B', 'A'],
+          'D': ['A', 'C', 'B']}
 
-def bipartiteGraphColor(graph, start, coloring, color):
+
+def bipartiteGraphColor(graph, start, coloring, color, cycle=[], first_vertex=True):
+
     if start not in graph:
         return False, {}
 
     if start not in coloring:
         coloring[start] = color
     elif coloring[start] != color:
+        cycle.append(start)
         return False, {}
     else:
         return True, coloring
@@ -64,8 +71,13 @@ def bipartiteGraphColor(graph, start, coloring, color):
         newcolor = 'Sha'
 
     for vertex in graph[start]:
-        val, coloring = bipartiteGraphColor(graph, vertex, coloring, newcolor)
+        val, coloring = bipartiteGraphColor(
+            graph, vertex, coloring, newcolor, cycle, False)
         if val is False:
+            cycle.append(start)
+            if first_vertex:
+                print(
+                    f"Here is a cyclic path that cannot be colored {cycle[::-1]}")
             return False, {}
 
     return True, coloring
@@ -89,4 +101,6 @@ if __name__ == "__main__":
     # print(bipartiteGraphColor(graph2, 'B', {}, 'Sha'))
     # print(bipartiteGraphColor(grap, 'A', {}, 'Sha'))
 
-    print(full_bipartite(graph_disconnected))
+    # print(full_bipartite(graph_disconnected))
+
+    print(bipartiteGraphColor(graphc, 'A', {}, 'Sha'))
