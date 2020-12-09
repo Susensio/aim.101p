@@ -95,6 +95,25 @@ def full_bipartite(graph):
     return is_bipartite, coloring
 
 
+def find_path(graph, start, end, traversed=set(), path=[], first_vertex=True):
+    if start not in traversed:
+        traversed.add(start)
+    elif start == end:
+        path.append(start)
+        return True
+
+    for vertex in graph[start]:
+        found = find_path(graph, vertex, end, traversed, path, False)
+        if found is True:
+            path.append(start)
+            if first_vertex:
+                print(
+                    f"Here is a cyclic path that cannot be colored {path[::-1]}")
+            return True
+
+    return True, traversed
+
+
 if __name__ == "__main__":
     # print(bipartiteGraphColor(gra3, 'A', {}, 'Sha'))
     # print(bipartiteGraphColor(graph, 'B', {}, 'Sha'))
@@ -103,4 +122,6 @@ if __name__ == "__main__":
 
     # print(full_bipartite(graph_disconnected))
 
-    print(bipartiteGraphColor(graphc, 'A', {}, 'Sha'))
+    # print(bipartiteGraphColor(graphc, 'A', {}, 'Sha'))
+
+    print(find_path(graph, 'B', 'I'))
