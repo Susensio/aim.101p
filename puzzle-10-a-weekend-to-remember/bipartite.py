@@ -34,6 +34,18 @@ grap = {'A': ['B', 'D'],
         'C': ['D', 'B'],
         'D': ['A', 'C']}
 
+graph_disconnected = {
+    'A': ['B'],
+    'B': ['A'],
+    'C': ['D'],
+    'D': ['C', 'E', 'F'],
+    'E': ['D'],
+    'F': ['D', 'G', 'H', 'I'],
+    'G': ['F'],
+    'H': ['F'],
+    'I': ['F']
+}
+
 
 def bipartiteGraphColor(graph, start, coloring, color):
     if start not in graph:
@@ -59,8 +71,22 @@ def bipartiteGraphColor(graph, start, coloring, color):
     return True, coloring
 
 
+def full_bipartite(graph):
+    coloring = {}
+    color = 'Sha'
+    for node in graph:
+        if node not in coloring:
+            is_bipartite, coloring = bipartiteGraphColor(
+                graph, node, coloring, color)
+            if is_bipartite is False:
+                return False, {}
+    return is_bipartite, coloring
+
+
 if __name__ == "__main__":
-    print(bipartiteGraphColor(gra3, 'A', {}, 'Sha'))
-    print(bipartiteGraphColor(graph, 'B', {}, 'Sha'))
-    print(bipartiteGraphColor(graph2, 'B', {}, 'Sha'))
-    print(bipartiteGraphColor(grap, 'A', {}, 'Sha'))
+    # print(bipartiteGraphColor(gra3, 'A', {}, 'Sha'))
+    # print(bipartiteGraphColor(graph, 'B', {}, 'Sha'))
+    # print(bipartiteGraphColor(graph2, 'B', {}, 'Sha'))
+    # print(bipartiteGraphColor(grap, 'A', {}, 'Sha'))
+
+    print(full_bipartite(graph_disconnected))
