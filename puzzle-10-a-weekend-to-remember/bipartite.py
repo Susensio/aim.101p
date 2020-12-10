@@ -95,23 +95,23 @@ def full_bipartite(graph):
     return is_bipartite, coloring
 
 
-def find_path(graph, start, end, traversed=set(), path=[], first_vertex=True):
-    if start not in traversed:
-        traversed.add(start)
-    elif start == end:
-        path.append(start)
-        return True
+def find_path(graph, start, end, traversed=set(), path=[]):
+    if start in traversed:
+        return False, []
+
+    traversed.add(start)
+    path.append(start)
+
+    if start == end:
+        return True, path
 
     for vertex in graph[start]:
-        found = find_path(graph, vertex, end, traversed, path, False)
+        found, _ = find_path(graph, vertex, end, traversed, path)
         if found is True:
-            path.append(start)
-            if first_vertex:
-                print(
-                    f"Here is a cyclic path that cannot be colored {path[::-1]}")
-            return True
+            return True, path
 
-    return True, traversed
+    path.remove(start)
+    return False, []
 
 
 if __name__ == "__main__":
