@@ -17,7 +17,7 @@ Part of my self-made [Artificial Intelligence Master](https://github.com/Susensi
 - [X] 8: You Wont Want To Play Sudoku Again
 - [X] 9: The Disorganized Handyman
 - [X] 10: A Weekend To Remember
-- [ ] 11: Memory Serves You Well
+- [X] 11: Memory Serves You Well
 
 
 ## Requirements
